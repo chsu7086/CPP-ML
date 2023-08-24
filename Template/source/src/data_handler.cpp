@@ -54,7 +54,7 @@ void DataHandler::read_feature_vector(std::string path) {
 
         std::cout << "Successfully read and stored " << data_array->size() << " feature vectors." << std::endl;
     } else {
-        std::cout << "Could not find the file." << std::endl;
+        std::cout << "Could not find the image file." << std::endl;
         exit(1);
     }
 }
@@ -63,6 +63,8 @@ void DataHandler::read_feature_label(std::string path) {
     uint32_t header[2]; // |MAGIC|NUM_ITEMS|
     unsigned char bytes[4]; // contains 32 bits in big endian, to be converted to little endian
     FILE* f = fopen(path.c_str(), "rb");
+
+    std::cout << "???" << std::endl;
 
     uint8_t element[1];
 
@@ -89,7 +91,7 @@ void DataHandler::read_feature_label(std::string path) {
 
         std::cout << "Successfully read and stored labels." << std::endl;
     } else {
-        std::cout << "Could not find the file." << std::endl;
+        std::cout << "Could not find the label file." << std::endl;
         exit(1);
     }
 }
