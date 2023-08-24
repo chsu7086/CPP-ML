@@ -1,0 +1,9 @@
+# ninja log v5
+1	510	1692917496480322675	CMakeFiles/DataHandlerTemplateBinary.dir/src/data.cpp.o	be80db15338f1b90
+1	1355	1692917522440304785	CMakeFiles/DataHandlerTemplateBinary.dir/main.cpp.o	a6d930d626a4c5f0
+1356	1528	1692917522610304648	DataHandlerTemplateBinary	ec9cf2c1791bf73d
+1	1728	1692917497690321907	CMakeFiles/DataHandlerTemplateBinary.dir/src/data_handler.cpp.o	853636c09bf3e62e
+1	461	1692917556560281859	CMakeFiles/DataHandlerTemplateBinary.dir/src/data.cpp.o	be80db15338f1b90
+1	1410	1692917557510281253	CMakeFiles/DataHandlerTemplateBinary.dir/main.cpp.o	a6d930d626a4c5f0
+1	1541	1692917557640281170	CMakeFiles/DataHandlerTemplateBinary.dir/src/data_handler.cpp.o	853636c09bf3e62e
+1541	1702	1692917557800281068	DataHandlerTemplateBinary	ec9cf2c1791bf73d

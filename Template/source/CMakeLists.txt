@@ -10,7 +10,8 @@ project(
 add_executable(
     DataHandlerTemplateBinary
     main.cpp
-    # src/<file>
+    src/data_handler.cpp
+    src/data.cpp
 )
 
 target_compile_features(DataHandlerTemplateBinary PRIVATE cxx_std_23)
