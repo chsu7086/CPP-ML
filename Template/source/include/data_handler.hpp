@@ -16,8 +16,8 @@ class DataHandler {
     private:
         std::vector<Data*>* data_array; // all of the data (pre-split)
         std::vector<Data*>* training_data;
-        std::vector<Data*>* test_data; // used during training
-        std::vector<Data*>* validation_data; // used after training (to calculate the performance of a model)
+        std::vector<Data*>* test_data; // used after training (to calculate the performance of a model)
+        std::vector<Data*>* validation_data; // used during training
 
         int num_classes;
         int feature_vector_size;
