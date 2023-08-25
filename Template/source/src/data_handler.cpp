@@ -3,10 +3,10 @@
 DataHandler::DataHandler() {
 
     // Allocating a heap to each of the following
-    auto data_array = new std::vector<Data*>;
-    auto training_data = new std::vector<Data*>;
-    auto test_data = new std::vector<Data*>;
-    auto validation_data = new std::vector<Data*>;
+    data_array = new std::vector<Data*>;
+    training_data = new std::vector<Data*>;
+    test_data = new std::vector<Data*>;
+    validation_data = new std::vector<Data*>;
 }
 DataHandler::~DataHandler() {
 
@@ -20,9 +20,6 @@ void DataHandler::read_feature_vector(std::string path) {
     unsigned char bytes[4]; // contains 32 bits in big endian, to be converted to little endian
     FILE* f = fopen(path.c_str(), "rb");
 
-    int image_size;
-    uint8_t element[1];
-
     if (f) {
         for (int i = 0; i < 4; ++i) {
             if (fread(bytes, sizeof(bytes), 1, f)) {
@@ -35,10 +32,12 @@ void DataHandler::read_feature_vector(std::string path) {
 
         std::cout << "Done getting image file header." << std::endl;
 
-        image_size = header[2] * header[3];
+        int image_size = header[2] * header[3];
 
         for (int i = 0; i < header[1]; ++i) {
-            auto d = new Data();
+            Data* d = new Data();
+
+            uint8_t element[1];
             
             for (int j = 0; j < image_size; ++j) {
                 if (fread(element, sizeof(element), 1, f)) {
@@ -63,8 +62,6 @@ void DataHandler::read_feature_label(std::string path) {
     uint32_t header[2]; // |MAGIC|NUM_ITEMS|
     unsigned char bytes[4]; // contains 32 bits in big endian, to be converted to little endian
     FILE* f = fopen(path.c_str(), "rb");
-
-    std::cout << "???" << std::endl;
 
     uint8_t element[1];
 
@@ -135,7 +132,7 @@ void DataHandler::count_classes() {
     }
 
     num_classes = count;
-    std::cout << "Successfully extracted " << num_classes << "unique classes." << std::endl;
+    std::cout << "Successfully extracted " << num_classes << " unique classes." << std::endl;
 }
 
 uint32_t DataHandler::convert_to_little_endian(const unsigned char* bytes) {
