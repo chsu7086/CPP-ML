@@ -16,7 +16,7 @@ void KNN::find_k_nearest(Data* query_point) {
 
     neighbors = new std::vector<Data*>;
     
-    double distance;
+    double distance = 0.0;
     double min = std::numeric_limits<double>::max();
     double previous_min = min; // previous minimum
     int index = 0;
@@ -25,6 +25,8 @@ void KNN::find_k_nearest(Data* query_point) {
         if (i == 0) {
             for (int j = 0; j < training_data->size(); ++j) {
                 distance = calculate_distance(query_point, training_data->at(j));
+                training_data->at(j)->set_distance(distance);
+
                 if (distance < min) {
                     min = distance;
                     index = j;
@@ -36,8 +38,9 @@ void KNN::find_k_nearest(Data* query_point) {
             min = std::numeric_limits<double>::max();
         } else {
             for (int j = 0; j < training_data->size(); ++j) {
-                distance = calculate_distance(query_point, training_data->at(j));
-                if (distance > previous_min && distance < min) {
+                distance = training_data->at(j)->get_distance();
+
+                if (distance < min && distance > previous_min) {
                     min = distance;
                     index = j;
                 }
@@ -76,6 +79,7 @@ uint8_t KNN::predict() {
     int val;
 
     for (int i = 0; i < neighbors->size(); ++i) {
+        
         if ( class_freq.find(neighbors->at(i)->get_label()) == class_freq.end() ) {
             class_freq[neighbors->at(i)->get_label()] = 1;
         } else {
@@ -105,17 +109,11 @@ double KNN::calculate_distance(Data* query_point, Data* input) {
         exit(1);
     }
 
-// #ifdef EUCLID
-//     for (int i = 0; i < query_point->get_feature_vector_size(); ++i) {
-//         distance += pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
-//     }
-//     distance = sqrt(distance);
-#ifdef MANHATTAN
-    // if want to use Manhattan then modify the code to use it
     for (int i = 0; i < query_point->get_feature_vector_size(); ++i) {
-        distance += abs(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i));
+        distance += pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
     }
-#endif
+    
+    distance = sqrt(distance);
 
     return distance;
 }
@@ -128,9 +126,10 @@ double KNN::validate_performance() {
 
     int track = 0;
 
-    for (auto* query_point: *validation_data) {
-        if ( (track+1)%100 == 0 ) {
+    for (Data* query_point: *validation_data) {
+        if ( (track+1)%10 == 0 ) {
             std::cout << "Current query point: " << track+1 << "-th" << std::endl;
+            std::cout << "Current performance: " << (double) count / (track+1) * 100.0 << " %" << std::endl;
         }
 
         find_k_nearest(query_point);
@@ -144,7 +143,7 @@ double KNN::validate_performance() {
     }
 
     performance = (double) count / validation_data->size() * 100.0;
-    std::cout << "Validation performance for k=" << k << ": " << performance << " %%" << std::endl;
+    std::cout << "Validation performance for k=" << k << ": " << performance << " %" << std::endl;
     
     return performance;
 }
@@ -155,7 +154,7 @@ void KNN::test_performance() {
     int count = 0;
     int prediction;
 
-    for (auto* query_point: *test_data) {
+    for (Data* query_point: *test_data) {
         find_k_nearest(query_point);
         prediction = predict();
 
@@ -166,5 +165,5 @@ void KNN::test_performance() {
 
     performance = (double) count / test_data->size() * 100.0;
 
-    std::cout << "Tested performance for k=" << k << ": " << performance << "%%" << std::endl;
+    std::cout << "Tested performance for k=" << k << ": " << performance << "%" << std::endl;
 }

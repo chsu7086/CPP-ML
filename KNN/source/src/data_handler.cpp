@@ -96,6 +96,7 @@ void DataHandler::split_data() {
 
 	int train_size = data_array->size() * TRAIN_SET_PERCENT;
 	int test_size = data_array->size() * TEST_SET_PERCENT;
+    int validation_size = data_array->size() * VALID_SET_PERCENT;
 
 	std::vector<int> rand_indices(data_array->size());
 	unsigned seed = std::chrono::system_clock().now().time_since_epoch().count(); // set seed using time
@@ -107,7 +108,7 @@ void DataHandler::split_data() {
 			training_data->push_back( data_array->at(rand_indices[i]) );
 		else if (i < train_size+test_size)
 			test_data->push_back( data_array->at(rand_indices[i]) );
-		else
+		else if (i < train_size+test_size+validation_size)
 			validation_data->push_back( data_array->at(rand_indices[i]) );
 	}
 
