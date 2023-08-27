@@ -2,7 +2,7 @@
 
 Data::Data() {
 
-	feature_vector = new std::vector<uint8_t>;
+    auto feature_vector = new std::vector<uint8_t>;
 }
 Data::~Data() {
 

@@ -1,7 +1,11 @@
 #pragma once
 
-#include <vector>
 #include "data.hpp"
+#include <vector>
+#include <cmath> // sqrt for L2 norm
+#include <limits> // for maximum value of double
+#include <map>
+#include <cstdint>
 
 class KNN {
 
@@ -22,9 +26,9 @@ class KNN {
     void set_test_data(std::vector<Data*>* vec);
     void set_validation_data(std::vector<Data*>* vec);
     void set_k(int val); // change k value while not re-loading data
+    void test_performance(); // used to prove that our model is repeatable
 
-    int predict();
+    uint8_t predict();
     double calculate_distance(Data* query_point, Data* input);
     double validate_performance(); // used to determin k
-    double test_performance(); // used to prove that our model is repeatable
 };

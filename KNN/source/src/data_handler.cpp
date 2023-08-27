@@ -3,10 +3,10 @@
 DataHandler::DataHandler() {
 
     // Allocating a heap to each of the following
-    data_array = new std::vector<Data*>;
-    training_data = new std::vector<Data*>;
-    test_data = new std::vector<Data*>;
-    validation_data = new std::vector<Data*>;
+    auto* data_array = new std::vector<Data*>;
+    auto* training_data = new std::vector<Data*>;
+    auto* test_data = new std::vector<Data*>;
+    auto* validation_data = new std::vector<Data*>;
 }
 DataHandler::~DataHandler() {
 
@@ -35,7 +35,7 @@ void DataHandler::read_feature_vector(std::string path) {
         int image_size = header[2] * header[3];
 
         for (int i = 0; i < header[1]; ++i) {
-            Data* d = new Data();
+            auto* d = new Data();
 
             uint8_t element[1];
             
