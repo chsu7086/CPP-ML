@@ -20,7 +20,7 @@ int main() {
     knn->set_validation_data(dh->get_validation_data());
 
     // try: set threshold and find the leat k for which performance exceeds it
-    for (int i = 1; i < 13; ++i) {
+    for (int i = 1; i < 7; i += 2) {
         knn->set_k(i);
         current_validation_performance = knn->validate_performance();
         

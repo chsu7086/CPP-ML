@@ -14,7 +14,7 @@ KNN::~KNN() {
 
 void KNN::find_k_nearest(Data* query_point) {
 
-    auto* neighbors = new std::vector<Data*>;
+    neighbors = new std::vector<Data*>;
     
     double distance;
     double min = std::numeric_limits<double>::max();
@@ -105,43 +105,53 @@ double KNN::calculate_distance(Data* query_point, Data* input) {
         exit(1);
     }
 
-#ifdef EUCLID
-    for (int i = 0; i < query_point->get_feature_vector_size(); ++i) {
-        distance += pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
-    }
-    distance = sqrt(distance);
-#elif defined MANHATTAN
+// #ifdef EUCLID
+//     for (int i = 0; i < query_point->get_feature_vector_size(); ++i) {
+//         distance += pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
+//     }
+//     distance = sqrt(distance);
+#ifdef MANHATTAN
     // if want to use Manhattan then modify the code to use it
     for (int i = 0; i < query_point->get_feature_vector_size(); ++i) {
         distance += abs(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i));
     }
 #endif
+
+    return distance;
 }
 /* used to determin k */
 double KNN::validate_performance() {
 
-    double validation_performance = 0.0;
+    double performance = 0.0;
     int count = 0;
     int prediction;
 
+    int track = 0;
+
     for (auto* query_point: *validation_data) {
+        if ( (track+1)%100 == 0 ) {
+            std::cout << "Current query point: " << track+1 << "-th" << std::endl;
+        }
+
         find_k_nearest(query_point);
         prediction = predict();
 
         if (prediction == query_point->get_label()) {
             ++count;
         }
+
+        ++track;
     }
 
-    validation_performance = (double) count / validation_data->size() * 100.0;
-    std::cout << "Validation performance for k=" << k << ": " << validate_performance << " %%" << std::endl;
+    performance = (double) count / validation_data->size() * 100.0;
+    std::cout << "Validation performance for k=" << k << ": " << performance << " %%" << std::endl;
     
-    return validation_performance;
+    return performance;
 }
 /* used to prove that our model is repeatable */
 void KNN::test_performance() {
 
-    double test_performance = 0.0;
+    double performance = 0.0;
     int count = 0;
     int prediction;
 
@@ -154,7 +164,7 @@ void KNN::test_performance() {
         }
     }
 
-    test_performance = (double) count / test_data->size() * 100.0;
-    
-    std::cout << "Tested performance for k=" << k << ": " << test_performance << "%%" << std::endl;
+    performance = (double) count / test_data->size() * 100.0;
+
+    std::cout << "Tested performance for k=" << k << ": " << performance << "%%" << std::endl;
 }
